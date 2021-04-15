@@ -1,28 +1,33 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 // import { axios } from 'axios';
 import './ProductForm.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button } from '@material-ui/core';
+import { CLEAR_ALL_IMAGES } from '../../redux/actions/actionTypes';
 import UploadImages from './UploadImages';
-import Preview from './Preview';
-import apiHeaders from '../../apiKeys';
+// import apiHeaders from '../../apiKeys';
 import makes from '../../vehicles';
 
 const ProductForm = () => {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState(0.00);
-  const [borough, setBorough] = useState('none');
   const [description, setDescription] = useState('');
   const [make, setMake] = useState('none');
   const [model, setModel] = useState('none');
-  const [models, setModels] = useState([]);
+  // const [models, setModels] = useState([]);
   const [condition, setCondition] = useState('none');
   const [year, setYear] = useState('none');
+  const [color, setColor] = useState('none');
   // eslint-disable-next-line no-unused-vars
   const user = useSelector((state) => state.auth.user);
+  const images = useSelector((state) => state.image.imageUrls);
+  const dispatch = useDispatch();
 
   const submitProduct = (event) => {
     event.preventDefault();
-    fetch('/api/products', {
+    fetch('/api/products/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,34 +36,45 @@ const ProductForm = () => {
       body: JSON.stringify({
         title,
         price,
-        borough,
         description,
         make,
+        model,
         condition,
+        color,
         year,
         sellerID: user.id,
+        images,
       }),
     }).then((res) => {
       if (res.status === 200) {
         setTitle('');
         setPrice(0.00);
-        setBorough('none');
         setDescription('');
         setMake('none');
+        setModel('none');
         setCondition('none');
+        setColor('');
         setYear('none');
+        dispatch({
+          type: CLEAR_ALL_IMAGES,
+        });
       }
     });
   };
 
   const clearFields = () => {
+    // reset products state here
     setTitle('');
     setPrice(0.00);
-    setBorough('none');
     setDescription('');
     setMake('none');
+    setModel('none');
     setCondition('none');
+    setColor('');
     setYear('none');
+    dispatch({
+      type: CLEAR_ALL_IMAGES,
+    });
   };
 
   const getMakes = () => {
@@ -66,24 +82,40 @@ const ProductForm = () => {
     makes.forEach((brand) => carMakes.push(<option value={brand}>{brand}</option>));
     return carMakes;
   };
-
-  // const getModels = () => {
-  useEffect(() => {
-    const carModels = [];
-    fetch(`https://parseapi.back4app.com/classes/Carmodels_Car_Model_List_${make}?order=Model&keys=Model,Year`,
-      {
-        headers: apiHeaders,
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        data.results.forEach((car) => {
-          carModels.push(<option value={car.Model}>{car.Model}</option>);
-        });
-        const filteredModels = new Set(carModels);
-        setModels(filteredModels);
-      })
-      .catch((error) => { throw error; });
-  }, [make]);
+  // export const InitialState = {
+  //   title: '',
+  //   year: '',
+  //   make: '',
+  //   model: [],
+  //   sku: '',
+  //   productName: '',
+  //   productDescription: '',
+  //   color: '',
+  //   discount: '',
+  //   unitsInStock: 0,
+  //   unitsOnOrder: 0,
+  //   productAvailable: false,
+  //   discountAvailable: false,
+  //   images: [],
+  //   note: '',
+  //   price: '',
+  // };
+  // useEffect(() => {
+  //   const carModels = [];
+  //   fetch(`https://parseapi.back4app.com/classes/Carmodels_Car_Model_List_${make}?order=Model&keys=Model,Year`,
+  //     {
+  //       headers: apiHeaders,
+  //     })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       data.results.forEach((car) => {
+  //         carModels.push(<option value={car.Model}>{car.Model}</option>);
+  //       });
+  //       const filteredModels = new Set(carModels);
+  //       setModels(filteredModels);
+  //     })
+  //     .catch((error) => { throw error; });
+  // }, [make]);
 
   // carChoices.carYears.push(<option value={car.Year}>{car.Year}</option>);
   return (
@@ -120,7 +152,8 @@ const ProductForm = () => {
               <label htmlFor="form__manufacturer">
                 <h4>Make/Manufacturer</h4>
                 <select name="make" id="form__manufacturer" value={make} onChange={(e) => setMake(e.target.value)}>
-                  <option value="none" selected disabled>Select</option>
+                  <option value="none" selected disabled>None</option>
+                  <option value="multiple">Multiple</option>
                   {getMakes()}
                 </select>
               </label>
@@ -130,8 +163,11 @@ const ProductForm = () => {
               <label htmlFor="form__manufacturer">
                 <h4>Model</h4>
                 <select name="model" id="form__manufacturer" value={model} onChange={(e) => setModel(e.target.value)}>
-                  <option value="none" selected disabled>Select</option>
-                  {models}
+                  <option value="none" selected disabled>None</option>
+                  <option value="Pinto">Pinto</option>
+                  <option value="Prius">Prius</option>
+                  <option value="multiple">Multiple</option>
+                  {/* {models} */}
                 </select>
               </label>
             </div>
@@ -141,6 +177,7 @@ const ProductForm = () => {
                 <h4>Year</h4>
                 <select name="year" id="form__year" value={year} onChange={(e) => setYear(e.target.value)}>
                   <option value="none" selected disabled>Select</option>
+                  <option value="2018">2018</option>
                   {/* {getModels().carYears} */}
                 </select>
               </label>
@@ -157,13 +194,11 @@ const ProductForm = () => {
                 <option value="Salvage">Salvage</option>
               </select>
             </label>
-
             <UploadImages />
-            <Preview />
           </div>
           <div className="form__buttons">
-            <button type="button" onClick={submitProduct} className="button__createListing">Create Listing</button>
-            <button type="button" onClick={clearFields} className="button__clearListing">Clear All Fields</button>
+            <Button color="primary" variant="contained" type="button" onClick={submitProduct} className="button__createListing">Create Listing</Button>
+            <Button variant="contained" type="button" onClick={clearFields} className="button__clearListing">Clear All Fields</Button>
           </div>
         </form>
       </div>
