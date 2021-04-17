@@ -16,7 +16,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import BusinessIcon from '@material-ui/icons/Business';
 import { useSelector, useDispatch } from 'react-redux';
 import Logo from '../../yardhop-logo.png';
-import * as types from '../../redux/actions/actionTypes';
+import { AUTH_USER, SET_USER_ROLE } from '../../redux/actions/actionTypes';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -39,13 +39,8 @@ const Signup = () => {
         userRole,
         zipcode,
       });
-      dispatch({
-        type: types.AUTH_USER,
-        payload: {
-          name: res.data.name,
-          id: res.data.id,
-        },
-      });
+      dispatch({ type: AUTH_USER, payload: res.data });
+      dispatch({ type: SET_USER_ROLE, payload: res.data.userRole });
       if (userRole === 'CUSTOMER') history.push('/home');
       else history.push('/dashboard');
     } catch (err) {
@@ -55,7 +50,7 @@ const Signup = () => {
   };
 
   const changeUserRole = (value) => {
-    dispatch({ type: types.SET_USER_ROLE, payload: value });
+    dispatch({ type: SET_USER_ROLE, payload: value });
   };
 
   return (
