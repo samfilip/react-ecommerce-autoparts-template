@@ -64,46 +64,46 @@ function InventoryChart() {
             }}
           />
         </div>
-        <div className="pieGraph">
-          <Pie
-            data={{
-              labels: [
-                'Brooklyn',
-                'Queens',
-                'Manhattan',
-                'Bronx',
-                'Staten Island',
-              ],
-              datasets: [
-                {
-                  label: 'Parts based on Borough',
-                  data: [23, 54, 31, 10, 21],
-                  backgroundColor: [
-                    'rgba(255,99,132,0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(153, 102, 255, 0.6)',
-                    'rgba(255, 159, 64, 0.6)',
-                    'rgba(255, 99, 132, 0.6)',
-                  ],
-                },
-              ],
-            }}
-            options={{
-              title: {
-                label: 'hello',
-                text: 'Parts',
-                fontSize: 12,
+        {/* <div className="pieGraph"> */}
+        {/* <Pie
+          data={{
+            labels: [
+              'Brooklyn',
+              'Queens',
+              'Manhattan',
+              'Bronx',
+              'Staten Island',
+            ],
+            datasets: [
+              {
+                label: 'Parts based on Borough',
+                data: [23, 54, 31, 10, 21],
+                backgroundColor: [
+                  'rgba(255,99,132,0.6)',
+                  'rgba(54, 162, 235, 0.6)',
+                  'rgba(255, 206, 86, 0.6)',
+                  'rgba(75, 192, 192, 0.6)',
+                  'rgba(153, 102, 255, 0.6)',
+                  'rgba(255, 159, 64, 0.6)',
+                  'rgba(255, 99, 132, 0.6)',
+                ],
               },
-              legend: {
-                text: 'hei',
-                display: 'hi',
-                position: 'right',
-              },
-            }}
-          />
-        </div>
+            ],
+          }}
+          options={{
+            title: {
+              label: 'hello',
+              text: 'Parts',
+              fontSize: 12,
+            },
+            legend: {
+              text: 'hei',
+              display: 'hi',
+              position: 'right',
+            },
+          }}
+        /> */}
+        {/* </div> */}
       </div>
       <div className="purchaseTable">
         <PurchaseTable />

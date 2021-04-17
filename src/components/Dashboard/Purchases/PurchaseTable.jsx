@@ -154,7 +154,7 @@ function PurchaseTable() {
 
   return (
     <div className="purchaseParent">
-      <MaterialTable title="Purchase History" data={data} columns={columns} />
+      <MaterialTable title="Seller History" data={data} columns={columns} />
     </div>
   );
 }

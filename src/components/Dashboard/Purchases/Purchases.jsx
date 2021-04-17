@@ -27,7 +27,7 @@ const Purchases = () => {
 
   return (
     <div id="purchases">
-      <h1>Purchased History</h1>
+      <h1>Seller History</h1>
       <PurchaseTable />
       <div>
         {purchases.map((purchase) => (

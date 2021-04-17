@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import './Dashboard.css';
 import { useSelector } from 'react-redux';
-import Main from './Main';
+// import Main from './Main';
 import Sidebar from './Sidebar';
 import ProductForm from './ProductForm';
 import Purchases from './Purchases/Purchases';
@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   const ownerRoutes = (
     <>
-      <Route exact path="/dashboard" component={Main} />
+      <Route exact path="/dashboard" component={Inventory} />
       <Route exact path="/dashboard/newProduct" component={ProductForm} />
       <Route exact path="/dashboard/inventory" component={Inventory} />
       <Route exact path="/dashboard/purchases" component={Purchases} />

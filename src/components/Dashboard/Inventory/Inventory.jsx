@@ -7,7 +7,13 @@ import InventoryChart from './InventoryChart';
 const Inventory = () => {
   const testing = false;
   const user = useSelector((state) => state.auth.user);
+  const chats = useSelector((state) => state.chat);
   const [inventory, setInventory] = useState([]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(chats);
+  });
   if (testing === true) {
     const getInventory = () => {
       fetch(`/api/productsByUser/${user.id}`, {
@@ -26,7 +32,12 @@ const Inventory = () => {
   }
   return (
     <div id="inventory">
-      <h1>Inventory</h1>
+      <div className="main__title">
+        <div className="main__greeting">
+          <h1>{`Hello, ${user.name}!`}</h1>
+          <p>Welcome to your admin dashboard</p>
+        </div>
+      </div>
       <InventoryChart />
       <div>
         {inventory.map((item) => (

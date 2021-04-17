@@ -27,7 +27,7 @@ const Messages = () => {
       }
     };
     loadChats();
-  }, []);
+  }, [allChats]);
 
   const handleChat = async (e, rowData) => {
     const { chatSessionID, customerID } = rowData;
