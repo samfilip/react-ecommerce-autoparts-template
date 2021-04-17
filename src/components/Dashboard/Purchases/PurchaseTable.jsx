@@ -25,7 +25,7 @@ const PurchaseTable = (props) => {
 
   return (
     <div className="purchaseParent">
-      <MaterialTable title="Purchase History" data={data} columns={columns} />
+      <MaterialTable title="Purchase History" data={purchases} columns={columns} />
     </div>
   );
 };
