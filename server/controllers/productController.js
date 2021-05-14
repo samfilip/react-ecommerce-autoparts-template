@@ -8,20 +8,8 @@ async function getProduct(req, res, next) {
       productId,
     },
   })
-    .then((prod) => {
-      res.locals.product = prod;
-      return next();
-    })
-    .catch((error) => {
-      res.locals.error = error;
-      return next();
-    });
-}
-
-async function getAllProducts(req, res, next) {
-  await product.findAll()
-    .then((products) => {
-      res.locals.products = products;
+    .then((data) => {
+      res.locals.product = data;
       return next();
     })
     .catch((error) => {
@@ -66,14 +54,22 @@ async function getAllProductsByUser(req, res, next) {
 
 async function createProduct(req, res, next) {
   const {
-    title, make, model, year, description, price, images,
+    title, make, model, year, description, price, images, condition,
   } = req.body;
   // eslint-disable-next-line no-console
   console.log(req.body);
   const sellerID = req.cookies.ssid;
 
   await product.create({
-    title, make, model, year, description, price, sellerID, images,
+    productName: title,
+    make,
+    model,
+    year,
+    productDescription: description,
+    condition,
+    price,
+    sellerID,
+    images,
   })
     .then((prod) => {
       res.locals.product = prod;
@@ -108,8 +104,8 @@ async function updateProduct(req, res, next) {
       productId,
     },
   })
-    .then((prod) => {
-      res.locals.productupdated = prod;
+    .then((data) => {
+      res.locals.productupdated = data;
       return next();
     })
     .catch((error) => {
@@ -126,14 +122,38 @@ async function deleteProduct(req, res, next) {
       productId,
     },
   })
-    .then((prod) => {
-      res.locals.deletedproduct = prod;
+    .then((data) => {
+      res.locals.deletedproduct = data;
       return next();
     })
     .catch((error) => {
       res.locals.error = error;
       return next();
     });
+}
+
+async function getAllProducts(req, res, next) {
+  try {
+    const products = await product.findAll();
+    res.locals.products = products;
+
+    return next();
+  } catch (err) {
+    res.locals.err = err;
+    return next();
+  }
+}
+
+async function getHomepageProducts(req, res, next) {
+  try {
+    const products = await product.findAll({ limit: 9 });
+    res.locals.products = products;
+
+    return next();
+  } catch (err) {
+    res.locals.err = err;
+    return next();
+  }
 }
 
 module.exports = {
@@ -144,4 +164,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getHomepageProducts,
 };

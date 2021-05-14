@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-console */
 const { models: { order, orderDetail } } = require('../models/index.js');
 
@@ -19,6 +20,7 @@ async function getAllOrdersByUser(req, res, next) {
   })
     .then((orders) => {
       res.locals.orders = orders;
+      // console.log(res.locals.orders);
       return next();
     })
     .catch((error) => {
@@ -45,21 +47,21 @@ async function getOrder(req, res, next) {
 }
 
 async function createOrder(req, res, next) {
-  console.log('creating order');
+  // console.log('creating order');
+  // console.log(req.body.order);
   const {
-    date, productId: productIDs, sellerId: sellerID, buyerId: buyerID,
-  } = req.body;
+    orderDate: date, productId: productIDs, sellerId: sellerID, buyerId: buyerID, amount: amountPaid
+  } = req.body.order;
 
   try {
     // const transaction = uuidv4();
     const orderEntry = await order.create({
-      date,
+      orderDate: date,
       sellerID,
-      buyerID,
+      customerID: buyerID,
+      amount: amountPaid,
       timestamp: new Date(),
     });
-
-    console.log(orderEntry);
 
     const { orderID } = orderEntry;
     const orderDetailsInput = productIDs.map((productID) => ({

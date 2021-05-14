@@ -13,16 +13,18 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
-    "chart.js": "^2.9.4",
+    "chart.js": "^2.5.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "eslint-config-prettier": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
-    "faker": "^5.5.3",
+    "i": "^0.3.6",
     "material-table": "^1.69.2",
     "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
+    "npm": "^7.10.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "prop-types": "^15.7.2",
@@ -39,6 +41,8 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",
     "sequelize": "^6.6.2",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
     "stripe": "^8.142.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.1"
@@ -47,6 +51,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test-hh": "bash ./scripts/run-test.sh",
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint ./server",
     "server": "nodemon server/server.js"
@@ -74,8 +79,8 @@
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-react": "^7.23.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "faker": "^5.5.3",
     "nodemon": "^2.0.7",
-    "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.3"
   }
 }

@@ -21,7 +21,7 @@ router.get('/', userController.getUsers, (req, res) => {
 router.post('/verify', userController.verifyUser, cookieController.setSSIDCookie, sessionController.startSession, (req, res) => {
   if (res.locals.error) res.status(400).json(res.locals.error);
   else {
-    res.status(200).json({ name: res.locals.name, id: res.locals.userId });
+    res.status(200).json(res.locals.user);
   }
 });
 
@@ -29,13 +29,16 @@ router.delete('/verify', cookieController.removeCookie, sessionController.stopSe
   res.status(200).json('Signed out successfully');
 });
 
-router.post('/', userController.createUser, (req, res) => {
-  if (res.locals.error) res.status(400).json(res.locals.error);
-  else {
-    console.log({ name: res.locals.name, id: res.locals.userId });
-    res.status(200).json({ name: res.locals.name, id: res.locals.userId });
-  }
-});
+router.post('/', userController.createUser,
+  userController.verifyUser,
+  cookieController.setSSIDCookie,
+  sessionController.startSession, (req, res) => {
+    if (res.locals.error) res.status(400).json(res.locals.error);
+    else {
+      console.log({ name: res.locals.user.name, id: res.locals.user.userId });
+      res.status(200).json(res.locals.user);
+    }
+  });
 
 router.patch('/:userId', userController.updateUser, (req, res) => {
   if (res.locals.error) res.status(400).json(res.locals.error);

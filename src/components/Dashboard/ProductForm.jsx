@@ -5,10 +5,11 @@ import React, { useEffect, useState } from 'react';
 import './ProductForm.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
+import { v4 as uuidv4 } from 'uuid';
 import { CLEAR_ALL_IMAGES } from '../../redux/actions/actionTypes';
 import UploadImages from './UploadImages';
 // import apiHeaders from '../../apiKeys';
-import makes from '../../vehicles';
+import cars from '../../vehicles';
 
 const ProductForm = () => {
   const [title, setTitle] = useState('');
@@ -16,7 +17,6 @@ const ProductForm = () => {
   const [description, setDescription] = useState('');
   const [make, setMake] = useState('none');
   const [model, setModel] = useState('none');
-  // const [models, setModels] = useState([]);
   const [condition, setCondition] = useState('none');
   const [year, setYear] = useState('none');
   const [color, setColor] = useState('none');
@@ -27,6 +27,7 @@ const ProductForm = () => {
 
   const submitProduct = (event) => {
     event.preventDefault();
+
     fetch('/api/products/create', {
       method: 'POST',
       headers: {
@@ -79,27 +80,27 @@ const ProductForm = () => {
 
   const getMakes = () => {
     const carMakes = [];
-    makes.forEach((brand) => carMakes.push(<option value={brand}>{brand}</option>));
+    cars.makes.forEach((brand) => carMakes.push(<option value={brand} key={uuidv4()}>{brand}</option>));
     return carMakes;
   };
-  // export const InitialState = {
-  //   title: '',
-  //   year: '',
-  //   make: '',
-  //   model: [],
-  //   sku: '',
-  //   productName: '',
-  //   productDescription: '',
-  //   color: '',
-  //   discount: '',
-  //   unitsInStock: 0,
-  //   unitsOnOrder: 0,
-  //   productAvailable: false,
-  //   discountAvailable: false,
-  //   images: [],
-  //   note: '',
-  //   price: '',
-  // };
+
+  const getModels = () => {
+    const carModels = [];
+    cars.models.forEach((mod) => carModels.push(<option value={mod} key={uuidv4()}>{mod}</option>));
+    return carModels;
+  };
+
+  const carYears = () => {
+    const years = [];
+    for (let i = 2021; i > 1900; i -= 1) {
+      years.push(
+        <option key={uuidv4()} value={i.toString()}>
+          {i}
+        </option>,
+      );
+    }
+    return years;
+  };
   // useEffect(() => {
   //   const carModels = [];
   //   fetch(`https://parseapi.back4app.com/classes/Carmodels_Car_Model_List_${make}?order=Model&keys=Model,Year`,
@@ -143,7 +144,6 @@ const ProductForm = () => {
                 <textarea rows="10" name="description" type="text" id="form__description" value={description} onChange={(e) => setDescription(e.target.value)} />
               </label>
             </div>
-
           </div>
 
           <div className="productForm__details__cont">
@@ -152,7 +152,7 @@ const ProductForm = () => {
               <label htmlFor="form__manufacturer">
                 <h4>Make/Manufacturer</h4>
                 <select name="make" id="form__manufacturer" value={make} onChange={(e) => setMake(e.target.value)}>
-                  <option value="none" selected disabled>None</option>
+                  <option value="none">None</option>
                   <option value="multiple">Multiple</option>
                   {getMakes()}
                 </select>
@@ -163,11 +163,10 @@ const ProductForm = () => {
               <label htmlFor="form__manufacturer">
                 <h4>Model</h4>
                 <select name="model" id="form__manufacturer" value={model} onChange={(e) => setModel(e.target.value)}>
-                  <option value="none" selected disabled>None</option>
-                  <option value="Pinto">Pinto</option>
+                  <option value="none">None</option>
                   <option value="Prius">Prius</option>
                   <option value="multiple">Multiple</option>
-                  {/* {models} */}
+                  {getModels()}
                 </select>
               </label>
             </div>
@@ -176,9 +175,9 @@ const ProductForm = () => {
               <label htmlFor="form__year">
                 <h4>Year</h4>
                 <select name="year" id="form__year" value={year} onChange={(e) => setYear(e.target.value)}>
-                  <option value="none" selected disabled>Select</option>
+                  <option value="none">Select</option>
                   <option value="2018">2018</option>
-                  {/* {getModels().carYears} */}
+                  {carYears()}
                 </select>
               </label>
             </div>
@@ -186,7 +185,7 @@ const ProductForm = () => {
             <label htmlFor="form__condition">
               <h4>Condition</h4>
               <select name="condition" id="form__condition" value={condition} onChange={(e) => setCondition(e.target.value)}>
-                <option value="none" selected disabled>Select</option>
+                <option value="none">Select</option>
                 <option value="Like New">Like New</option>
                 <option value="Excellent">Excellent</option>
                 <option value="Good">Good</option>
@@ -194,11 +193,19 @@ const ProductForm = () => {
                 <option value="Salvage">Salvage</option>
               </select>
             </label>
-            <UploadImages />
+
+            <div className="productForm__color">
+              <label htmlFor="form__color">
+                <h4>Color</h4>
+                <input name="color" id="form__condition" value={color} onChange={(e) => setColor(e.target.value)} />
+              </label>
+            </div>
+
           </div>
+          <UploadImages />
           <div className="form__buttons">
             <Button color="primary" variant="contained" type="button" onClick={submitProduct} className="button__createListing">Create Listing</Button>
-            <Button variant="contained" type="button" onClick={clearFields} className="button__clearListing">Clear All Fields</Button>
+            <Button variant="contained" type="button" onClick={clearFields} className="button__clearListing">Clear</Button>
           </div>
         </form>
       </div>

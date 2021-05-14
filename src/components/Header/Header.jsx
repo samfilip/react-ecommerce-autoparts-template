@@ -1,32 +1,32 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import SearchIcon from '@material-ui/icons/Search';
 import Nav from '../Nav/Nav';
 import Logo from '../../yardhop-logo.png';
 import './Header.css';
+import * as types from '../../redux/actions/actionTypes';
 
-const Header = () => (
-  <div className="header">
+const Header = () => {
+  const user = useSelector((state) => state.auth.user);
+  // const dispatch = useDispatch();
 
-    <div className="logo">
-      <Link to="/">
-        <img src={Logo} alt="" />
-      </Link>
-    </div>
+  return (
+    <div className="header">
 
-    <div className="header__search">
-      <Nav />
-      <div className="header__searchbar">
-        <input
-          type="text"
-          className="header__searchInput"
-          placeholder="Search for car parts using keywords or #..."
-        />
-        <SearchIcon className="header__searchIcon" />
+      <div className="logo">
+        <Link to="/">
+          <img src={Logo} alt="" />
+        </Link>
       </div>
-    </div>
 
-  </div>
-);
+      <div className="header__search">
+        <Nav />
+      </div>
+
+    </div>
+  );
+};
 
 export default Header;
